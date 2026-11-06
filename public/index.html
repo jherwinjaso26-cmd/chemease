@@ -85,8 +85,9 @@ h1{animation:float 3.5s ease-in-out infinite}
 @keyframes up{to{transform:translateY(-118vh) translateX(30px) rotate(40deg)}}
 .fp{position:fixed;left:50%;top:40%;transform:translateX(-50%);font-size:34px;font-weight:800;color:#fde047;text-shadow:0 2px 12px rgba(0,0,0,.6);z-index:60;pointer-events:none;animation:rise 1.1s ease-out forwards}
 @keyframes rise{to{transform:translate(-50%,-90px) scale(1.3);opacity:0}}
+header{padding-right:122px}
 </style></head><body>
-<header><h1>Chem<span>Ease</span> ⚗️</h1><p>Your pocket chemistry helper</p><button id="mu" onclick="tgl()" aria-label="Toggle sound" style="position:absolute;right:16px;top:16px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer">🔊</button></header>
+<header><h1>Chem<span>Ease</span> ⚗️</h1><p>Your pocket chemistry helper</p><button id="mu" onclick="tgl()" aria-label="Toggle sound" style="position:absolute;right:16px;top:16px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer">🔊</button><button id="vo" onclick="tgv()" aria-label="Toggle voice" style="position:absolute;right:68px;top:16px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer">🗣️</button></header>
 <nav id="nav"></nav>
 <main>
 <section id="pt"><div class="card"><p class="hint">Swipe sideways to see the whole table →</p><div class="pt"><div class="grid" id="grid"></div></div><div class="leg" id="leg"></div></div><div class="card" id="info">Tap an element to see its details.</div></section>
@@ -102,7 +103,7 @@ const CAT=["Alkali metal","Alkaline earth","Transition metal","Post-transition m
 function cat(z){if([3,11,19,37,55,87].includes(z))return 0;if([4,12,20,38,56,88].includes(z))return 1;if([2,10,18,36,54,86,118].includes(z))return 7;if([9,17,35,53,85,117].includes(z))return 6;if([5,14,32,33,51,52].includes(z))return 4;if([1,6,7,8,15,16,34].includes(z))return 5;if((z>=57&&z<=71)||(z>=89&&z<=103))return 8;if((z>=21&&z<=30)||(z>=39&&z<=48)||(z>=72&&z<=80)||(z>=104&&z<=112))return 2;return 3}
 function pos(z){if(z==1)return[1,1];if(z==2)return[1,18];if(z<=4)return[2,z-2];if(z<=10)return[2,z+8];if(z<=12)return[3,z-10];if(z<=18)return[3,z];if(z<=36)return[4,z-18];if(z<=54)return[5,z-36];if(z<=56)return[6,z-54];if(z<=71)return[8,z-54];if(z<=86)return[6,z-68];if(z<=88)return[7,z-86];if(z<=103)return[9,z-86];return[7,z-100]}
 const g=document.getElementById("grid");
-D.forEach(e=>{const[r,c]=pos(e.z),b=document.createElement("button");b.className="el k"+cat(e.z);b.style.animationDelay=e.z*7+"ms";b.style.gridRow=r>7?r+1:r;b.style.gridColumn=c;b.innerHTML="<span>"+e.z+"</span><b>"+e.s+"</b>";b.onclick=()=>{document.getElementById("info").innerHTML="<span class='big'>"+e.s+"</span> — <b>"+e.n+"</b><br>Atomic number: "+e.z+" · Atomic mass: "+e.m+" g/mol<br>Group: "+CAT[cat(e.z)];beep(260+e.z*5,.15,"sine",0,.1);document.getElementById("info").scrollIntoView({behavior:"smooth",block:"nearest"})};g.appendChild(b)});
+D.forEach(e=>{const[r,c]=pos(e.z),b=document.createElement("button");b.className="el k"+cat(e.z);b.style.animationDelay=e.z*7+"ms";b.style.gridRow=r>7?r+1:r;b.style.gridColumn=c;b.innerHTML="<span>"+e.z+"</span><b>"+e.s+"</b>";b.onclick=()=>{document.getElementById("info").innerHTML="<span class='big'>"+e.s+"</span> — <b>"+e.n+"</b><br>Atomic number: "+e.z+" · Atomic mass: "+e.m+" g/mol<br>Group: "+CAT[cat(e.z)];beep(260+e.z*5,.15,"sine",0,.1);say(e.n+". Atomic number "+e.z+". Atomic mass "+e.m+". "+CAT[cat(e.z)]);document.getElementById("info").scrollIntoView({behavior:"smooth",block:"nearest"})};g.appendChild(b)});
 document.getElementById("leg").innerHTML=CAT.map((c,i)=>"<span><i class='k"+i+"'></i>"+c+"</span>").join("");
 function parse(f){let i=0;const num=()=>{let s="";while(i<f.length&&/\d/.test(f[i]))s+=f[i++];return s?+s:1};
 function grp(){const c={};const add=(g,n)=>{for(const k in g)c[k]=(c[k]||0)+g[k]*n};
@@ -152,7 +153,7 @@ function mk(m){if(m=="el"){const e=rnd(D),o=shuf([e,...shuf(D.filter(x=>x!==e)).
 if(m=="mm"){const f=rnd(FP),v=mass(parse(f));return{q:"What is the molar mass of "+f+"? (g/mol, nearest whole number is fine)",ck:x=>Math.abs(parseFloat(x)-v)<=Math.max(.6,v*.005),ans:v.toFixed(2)+" g/mol"}}
 const b=rnd(BQ);return{q:"Balance: "+b[0]+" (enter coefficients separated by commas, e.g. 2,1,2)",ck:x=>x.split(",").map(n=>+n.trim()).join()==b[1].join(),ans:b[1].join(", ")}}
 function play(m){let qs;if(m=="quiz")qs=shuf(Q).slice(0,8);else if(m=="daily"){let s=+new Date().toISOString().slice(0,10).replace(/-/g,"");const r=()=>(s=s*16807%2147483647)/2147483647;qs=[...Q].sort(()=>r()-.5).slice(0,5)}else qs=Array.from({length:8},()=>mk(m));
-G={m,qs:qs.map(q=>Array.isArray(q)?{q:q[0],o:q[1],a:q[2]}:q),i:0,sc:0,st:0,lv:3};nxt()}
+SFX.start();G={m,qs:qs.map(q=>Array.isArray(q)?{q:q[0],o:q[1],a:q[2]}:q),i:0,sc:0,st:0,lv:3};nxt()}
 function nxt(){clearInterval(G.tm);if(G.i>=G.qs.length||G.lv<=0)return fin();const q=G.qs[G.i];G.t=15;G.done=0;
 gb.innerHTML=`<div class="hud"><span>${"❤️".repeat(G.lv)}</span><span>⭐ ${G.sc}</span><span>🔥 ${G.st}</span><span id="tm">⏱ 15</span></div><div class="bar"><i id="bi"></i></div><small style="color:var(--mu)">Question ${G.i+1} of ${G.qs.length}</small><h3>${q.q}</h3>`+(q.o?q.o.map((o,i)=>`<button class="opt" onclick="ans(${i})">${o}</button>`).join(""):`<input id="ti" autocomplete="off" onkeydown="if(event.key=='Enter')ans(0)"><button class="go" onclick="ans(0)">Submit</button>`)+`<div id="fb"></div>`;
 G.tm=setInterval(()=>{G.t--;if(G.t>0&&G.t<=5)SFX.tick();{const bi=document.getElementById("bi");bi.style.width=G.t/15*100+"%";bi.classList.toggle("lo",G.t<=5)}document.getElementById("tm").textContent="⏱ "+G.t;if(G.t<=0)ans(-1)},1000)}
@@ -171,7 +172,7 @@ else{SFX.no();lock=1;setTimeout(()=>{b.textContent=pb.textContent="?";b.classLis
 function flash(){clearInterval(G.tm);let dk=shuf(D.slice(0,36)),fl=0,know=0;
 const draw=()=>{if(!dk.length){gb.innerHTML=`<p class="big">All done! 🎉</p><p>Cards you knew first try or after review: ${know}</p><button class="go" onclick="flash()">Restart</button> <button class="go" onclick="gHome()">Menu</button>`;return}
 const e=dk[0];gb.innerHTML=`<div class="hud"><span>${dk.length} left</span><button class="go" style="margin:0" onclick="gHome()">Menu</button></div><button class="fc" id="fc">${fl?e.n+"<br><small>Atomic no. "+e.z+" · "+e.m+" g/mol · "+CAT[cat(e.z)]+"</small>":e.s}</button><p style="color:var(--mu)">Tap the card to flip</p>`+(fl?`<button class="go" onclick="fk(1)">✅ Got it</button> <button class="go" style="background:var(--no)" onclick="fk(0)">🔁 Review again</button>`:"");
-document.getElementById("fc").onclick=()=>{SFX.flip();fl=fl?0:1;draw()}};
+document.getElementById("fc").onclick=()=>{SFX.flip();fl=fl?0:1;if(fl)say(dk[0].n);draw()}};
 window.fk=k=>{k?SFX.ok():SFX.flip();const e=dk.shift();if(k)know++;else dk.push(e);fl=0;draw()};draw()}
 async function subm(m,sc){let n=ls("ce_name","");n=(prompt("Your name for the leaderboard (max 16 characters):",n)||"").trim();if(!n)return;sv("ce_name",n);
 try{const r=await fetch("/api/score",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:n,mode:m,score:sc})}),j=await r.json();if(!r.ok)throw Error(j.error||"Failed");board(m)}catch(e){alert("Couldn’t submit: "+e.message)}}
@@ -183,10 +184,27 @@ function sbu(){const b=document.getElementById("sb"),mx=document.documentElement
 function sbc(){const b=document.getElementById("sb"),mx=document.documentElement.scrollHeight-innerHeight;scrollTo({top:b.dataset.up=="1"?0:mx,behavior:"smooth"})}
 addEventListener("resize",dev);addEventListener("orientationchange",dev);addEventListener("scroll",sbu,{passive:true});
 try{new ResizeObserver(sbu).observe(document.body)}catch(e){}
+let vo=ls("ce_vo",1);
+function say(t){if(!vo||!window.speechSynthesis)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=.95;u.volume=1;speechSynthesis.speak(u)}catch(e){}}
+function tgv(){vo=vo?0:1;sv("ce_vo",vo);document.getElementById("vo").textContent=vo?"🗣️":"🤐";if(vo)say("Voice on");else if(window.speechSynthesis)speechSynthesis.cancel()}
+document.getElementById("vo").textContent=vo?"🗣️":"🤐";if(!window.speechSynthesis)document.getElementById("vo").style.display="none";
 function pop(t){const d=document.createElement("div");d.className="fp";d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),1100)}
 (function(){const w=document.createElement("div");w.id="fx";for(let i=0;i<16;i++){const b=document.createElement("i"),z=14+Math.random()*34;b.textContent=i%4==0?["⚛️","🧪","🔬","💧"][i/4%4|0]:"";b.style.cssText=`left:${Math.random()*100}%;width:${z}px;height:${z}px;font-size:${z*.75}px;animation-duration:${12+Math.random()*16}s;animation-delay:-${Math.random()*20}s`;w.appendChild(b)}document.body.prepend(w)})();
 function boom(n){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;for(let i=0;i<n;i++){const d=document.createElement("i");d.className="cf";d.style.cssText=`left:${Math.random()*100}vw;background:hsl(${Math.random()*360} 90% 60%);--x:${(Math.random()-.5)*220}px;animation-duration:${1.2+Math.random()*1.3}s;animation-delay:${Math.random()*.3}s`;document.body.appendChild(d);setTimeout(()=>d.remove(),3000)}}
 Object.assign(SFX,{ok:()=>{const b=523*Math.pow(1.06,Math.min(G.st||0,8));[1,1.25,1.5].forEach((r,i)=>beep(b*r,.14,"triangle",i*.07,.12))},no:()=>[300,230,160].forEach((f,i)=>beep(f,.22,"sawtooth",i*.12,.07)),win:()=>[523,659,784,1047,1319].forEach((f,i)=>beep(f,.25,"triangle",i*.1,.1))});
+let MG;
+function mg(){AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state=="suspended")AC.resume();if(!MG){MG=AC.createGain();MG.gain.value=1.8;const c=AC.createDynamicsCompressor();MG.connect(c);c.connect(AC.destination)}return MG}
+function beep(f,d,t,s,v){if(!snd)return;try{const M=mg(),o=AC.createOscillator(),g=AC.createGain(),t0=AC.currentTime+(s||0);o.type=t||"sine";o.frequency.value=f;g.gain.setValueAtTime(Math.min(.9,(v||.15)*2.4),t0);g.gain.exponentialRampToValueAtTime(.001,t0+d);o.connect(g);g.connect(M);o.start(t0);o.stop(t0+d)}catch(e){}}
+function slide(a,b,d,t,s,v){if(!snd)return;try{const M=mg(),o=AC.createOscillator(),g=AC.createGain(),t0=AC.currentTime+(s||0);o.type=t||"sine";o.frequency.setValueAtTime(a,t0);o.frequency.exponentialRampToValueAtTime(b,t0+d);g.gain.setValueAtTime(Math.min(.9,(v||.15)*2.4),t0);g.gain.exponentialRampToValueAtTime(.001,t0+d);o.connect(g);g.connect(M);o.start(t0);o.stop(t0+d)}catch(e){}}
+Object.assign(SFX,{
+ok:()=>{const k=Math.pow(1.06,Math.min(G.st||0,8));beep(784*k,.1,"square",0,.06);beep(1175*k,.1,"square",.08,.06);beep(1568*k,.3,"triangle",.16,.1);if((G.st||0)>=2){beep(2093,.15,"sine",.3,.07);beep(2637,.2,"sine",.4,.06)}},
+no:()=>{slide(400,90,.5,"sawtooth",0,.1);beep(110,.3,"sine",0,.3)},
+tick:()=>beep(1300,.04,"square",0,.05),
+flip:()=>slide(300,900,.09,"triangle",0,.1),
+start:()=>{slide(200,900,.25,"triangle",0,.1);beep(1175,.2,"sine",.25,.08)},
+win:()=>{[523,659,784,1047].forEach((f,i)=>beep(f,.18,"square",i*.11,.06));[523,659,784,1047].forEach(f=>beep(f,.8,"triangle",.5,.07))},
+lose:()=>{[330,311,294].forEach((f,i)=>beep(f,.35,"sawtooth",i*.28,.08));slide(260,70,.8,"sawtooth",.84,.1)},
+up:()=>{[523,659,784,988,1175,1568].forEach((f,i)=>beep(f,.16,"square",i*.07,.06));[1568,2093,2637].forEach((f,i)=>beep(f,.6,"sine",.5+i*.1,.08))}});
 document.addEventListener("click",e=>{if(e.target.closest("nav button"))beep(700,.04,"triangle",0,.05)});
 const T=[["pt","🧪 Table"],["mm","⚖️ Molar Mass"],["bal","🔄 Balancer"],["gm","🎮 Games"],["nt","📝 Notes"]];
 const nav=document.getElementById("nav");
