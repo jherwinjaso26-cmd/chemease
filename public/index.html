@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ChemEase</title>
+<meta name="theme-color" content="#120a2a"><title>ChemEase</title>
 <style>
 :root{--bg:#f6f8fb;--card:#fff;--tx:#18212f;--mu:#667085;--ac:#0f9d8a;--bd:#dfe5ec;--ok:#15803d;--no:#b42318;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10151c;--card:#1a212b;--tx:#e8edf3;--mu:#98a2b3;--ac:#2dd4bf;--bd:#2c3644;--ok:#4ade80;--no:#f87171}}
@@ -40,6 +40,51 @@ footer#dv{max-width:960px;margin:0 auto;padding:0 16px 70px;color:var(--mu);font
 @media(max-width:600px){body{font-size:15px}h1{font-size:22px}.card{padding:12px}nav{flex-wrap:wrap}nav button{flex:1 1 auto;padding:8px 10px;font-size:13px}.mg{grid-template-columns:repeat(3,1fr);gap:6px}.mc{font-size:clamp(11px,3.4vw,14px)}.fc{font-size:26px;min-height:130px}.big{font-size:19px}}
 @media(min-width:1100px){header,nav,main,footer#dv{max-width:1100px}}
 @media(max-height:500px) and (orientation:landscape){.fc{min-height:90px}.mg{grid-template-columns:repeat(6,1fr)}}
+body{background:radial-gradient(900px 500px at 8% -10%,color-mix(in srgb,var(--ac) 24%,transparent),transparent),radial-gradient(700px 420px at 100% 0,rgba(124,92,255,.2),transparent),var(--bg);background-attachment:fixed}
+h1{font-size:30px;font-weight:800;letter-spacing:-.5px}
+h1 span{background:linear-gradient(90deg,var(--ac),#7c5cff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card{border-radius:18px;box-shadow:0 6px 24px rgba(20,30,60,.08)}
+section.on{animation:pop .35s both}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes pulse{50%{transform:scale(1.04)}}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+nav button{transition:transform .12s,background .12s}nav button:hover{transform:translateY(-2px)}
+nav button.on{background:linear-gradient(90deg,var(--ac),#7c5cff);border-color:transparent;box-shadow:0 4px 14px rgba(124,92,255,.35)}
+.go{background:linear-gradient(90deg,var(--ac),#7c5cff);transition:transform .12s,box-shadow .12s;box-shadow:0 4px 12px rgba(124,92,255,.3)}
+.go:hover{transform:translateY(-2px)}.go:active,.opt:active,.mc:active{transform:scale(.96)}
+.opt{transition:transform .12s,border-color .12s,background .12s}.opt:hover:not(:disabled){transform:translateX(4px);border-color:var(--ac)}
+.opt.ok{animation:pulse .5s}.opt.no{animation:shake .4s}
+.el{animation:pop .45s both;transition:transform .12s}.el:hover{transform:scale(1.25);z-index:2;position:relative;outline:0;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.mc{transition:transform .15s,background .15s}.mc.up{animation:pop .25s both}
+.bar{height:10px;border-radius:9px;background:var(--bd);overflow:hidden;margin:8px 0}
+.bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--ac),#7c5cff);transition:width 1s linear;border-radius:9px}
+.bar i.lo{background:linear-gradient(90deg,#f87171,#fb923c)}
+.cf{position:fixed;top:-14px;width:9px;height:14px;z-index:50;pointer-events:none;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translate(var(--x),105vh) rotate(720deg);opacity:.85}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* colorful game theme (same on every phone, light or dark mode) */
+:root,:root:not([data-theme="light"]){color-scheme:dark;--bg:#120a2a;--card:rgba(255,255,255,.09);--tx:#f5f2ff;--mu:#bdb4de;--ac:#22d3ee;--bd:rgba(255,255,255,.2);--ok:#4ade80;--no:#fb7185}
+body{background:linear-gradient(135deg,#1b0f4a,#0f2a5c,#3a0f4d,#0b3b4f);background-size:300% 300%;animation:gshift 20s ease infinite}
+@keyframes gshift{50%{background-position:100% 100%}}
+.card{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.opt,input,textarea,.mc,.fc{background:rgba(255,255,255,.08)}
+header,nav,main,footer#dv{position:relative;z-index:1}
+h1{animation:float 3.5s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-4px)}}
+.go{animation:glow 2.4s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 0 22px rgba(34,211,238,.65)}}
+.big{background:linear-gradient(90deg,#22d3ee,#a78bfa,#f472b6,#22d3ee);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 4s linear infinite}
+@keyframes shine{to{background-position:300% 0}}
+.opt{animation:slide .4s both}#gbox h3{animation:slide .3s both}
+@keyframes slide{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+.mc.up{animation:flip .35s both}.mc.ok{animation:glow 1.6s ease-in-out infinite}.fc{animation:flip .35s both}
+@keyframes flip{from{transform:rotateY(90deg)}to{transform:none}}
+.el:hover{box-shadow:0 0 16px rgba(255,255,255,.7)}
+#fx{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+#fx i{position:absolute;bottom:-70px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.35),rgba(34,211,238,.12));border:1px solid rgba(255,255,255,.22);animation:up linear infinite;text-align:center;line-height:1;opacity:.75;font-style:normal}
+@keyframes up{to{transform:translateY(-118vh) translateX(30px) rotate(40deg)}}
+.fp{position:fixed;left:50%;top:40%;transform:translateX(-50%);font-size:34px;font-weight:800;color:#fde047;text-shadow:0 2px 12px rgba(0,0,0,.6);z-index:60;pointer-events:none;animation:rise 1.1s ease-out forwards}
+@keyframes rise{to{transform:translate(-50%,-90px) scale(1.3);opacity:0}}
 </style></head><body>
 <header><h1>Chem<span>Ease</span> ⚗️</h1><p>Your pocket chemistry helper</p><button id="mu" onclick="tgl()" aria-label="Toggle sound" style="position:absolute;right:16px;top:16px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer">🔊</button></header>
 <nav id="nav"></nav>
@@ -57,7 +102,7 @@ const CAT=["Alkali metal","Alkaline earth","Transition metal","Post-transition m
 function cat(z){if([3,11,19,37,55,87].includes(z))return 0;if([4,12,20,38,56,88].includes(z))return 1;if([2,10,18,36,54,86,118].includes(z))return 7;if([9,17,35,53,85,117].includes(z))return 6;if([5,14,32,33,51,52].includes(z))return 4;if([1,6,7,8,15,16,34].includes(z))return 5;if((z>=57&&z<=71)||(z>=89&&z<=103))return 8;if((z>=21&&z<=30)||(z>=39&&z<=48)||(z>=72&&z<=80)||(z>=104&&z<=112))return 2;return 3}
 function pos(z){if(z==1)return[1,1];if(z==2)return[1,18];if(z<=4)return[2,z-2];if(z<=10)return[2,z+8];if(z<=12)return[3,z-10];if(z<=18)return[3,z];if(z<=36)return[4,z-18];if(z<=54)return[5,z-36];if(z<=56)return[6,z-54];if(z<=71)return[8,z-54];if(z<=86)return[6,z-68];if(z<=88)return[7,z-86];if(z<=103)return[9,z-86];return[7,z-100]}
 const g=document.getElementById("grid");
-D.forEach(e=>{const[r,c]=pos(e.z),b=document.createElement("button");b.className="el k"+cat(e.z);b.style.gridRow=r>7?r+1:r;b.style.gridColumn=c;b.innerHTML="<span>"+e.z+"</span><b>"+e.s+"</b>";b.onclick=()=>{document.getElementById("info").innerHTML="<span class='big'>"+e.s+"</span> — <b>"+e.n+"</b><br>Atomic number: "+e.z+" · Atomic mass: "+e.m+" g/mol<br>Group: "+CAT[cat(e.z)];document.getElementById("info").scrollIntoView({behavior:"smooth",block:"nearest"})};g.appendChild(b)});
+D.forEach(e=>{const[r,c]=pos(e.z),b=document.createElement("button");b.className="el k"+cat(e.z);b.style.animationDelay=e.z*7+"ms";b.style.gridRow=r>7?r+1:r;b.style.gridColumn=c;b.innerHTML="<span>"+e.z+"</span><b>"+e.s+"</b>";b.onclick=()=>{document.getElementById("info").innerHTML="<span class='big'>"+e.s+"</span> — <b>"+e.n+"</b><br>Atomic number: "+e.z+" · Atomic mass: "+e.m+" g/mol<br>Group: "+CAT[cat(e.z)];beep(260+e.z*5,.15,"sine",0,.1);document.getElementById("info").scrollIntoView({behavior:"smooth",block:"nearest"})};g.appendChild(b)});
 document.getElementById("leg").innerHTML=CAT.map((c,i)=>"<span><i class='k"+i+"'></i>"+c+"</span>").join("");
 function parse(f){let i=0;const num=()=>{let s="";while(i<f.length&&/\d/.test(f[i]))s+=f[i++];return s?+s:1};
 function grp(){const c={};const add=(g,n)=>{for(const k in g)c[k]=(c[k]||0)+g[k]*n};
@@ -102,26 +147,26 @@ function tgl(){snd=snd?0:1;sv("ce_snd",snd);document.getElementById("mu").textCo
 document.getElementById("mu").textContent=snd?"🔊":"🔇";
 let G={};
 function gHome(){clearInterval(G.tm);const xp=ls("ce_xp",0),hs=ls("ce_hs",{});const L=LV.filter(l=>xp>=l[0]),nx=LV[L.length];
-gb.innerHTML=`<div class="big">🏅 ${L.pop()[1]}</div><small style="color:var(--mu)">${xp} XP${nx?" · "+(nx[0]-xp)+" to "+nx[1]:" · max level!"} · Daily streak: ${ls("ce_ds",{n:0}).n} 🔥</small><h3>Choose a game</h3>`+GM.map(m=>`<button class="opt" onclick="${m[2]}">${m[0]} <b>${m[1]}</b>${hs[m[3]]!=null?`<small style="color:var(--mu)"> · Best: ${hs[m[3]]}</small>`:""}</button>`).join("")+`<p style="color:var(--mu);font-size:13px">Quiz, element, molar mass and balance games: 8 questions, 3 lives, 15 seconds each. Faster answers and streaks earn bonus points.</p>`}
+gb.innerHTML=`<div class="big">🏅 ${L.pop()[1]}</div><div class="bar"><i style="width:${nx?Math.min(100,(xp-LV[L.length][0])/(nx[0]-LV[L.length][0])*100):100}%"></i></div><small style="color:var(--mu)">${xp} XP${nx?" · "+(nx[0]-xp)+" to "+nx[1]:" · max level!"} · Daily streak: ${ls("ce_ds",{n:0}).n} 🔥</small><h3>Choose a game</h3>`+GM.map((m,i)=>`<button class="opt" style="animation-delay:${i*60}ms" onclick="${m[2]}">${m[0]} <b>${m[1]}</b>${hs[m[3]]!=null?`<small style="color:var(--mu)"> · Best: ${hs[m[3]]}</small>`:""}</button>`).join("")+`<p style="color:var(--mu);font-size:13px">Quiz, element, molar mass and balance games: 8 questions, 3 lives, 15 seconds each. Faster answers and streaks earn bonus points.</p>`}
 function mk(m){if(m=="el"){const e=rnd(D),o=shuf([e,...shuf(D.filter(x=>x!==e)).slice(0,3)]),t=Math.floor(Math.random()*3),a=o.indexOf(e);return t==0?{q:"Which element has the symbol "+e.s+"?",o:o.map(x=>x.n),a}:t==1?{q:"What is the symbol for "+e.n+"?",o:o.map(x=>x.s),a}:{q:"Which element has atomic number "+e.z+"?",o:o.map(x=>x.n),a}}
 if(m=="mm"){const f=rnd(FP),v=mass(parse(f));return{q:"What is the molar mass of "+f+"? (g/mol, nearest whole number is fine)",ck:x=>Math.abs(parseFloat(x)-v)<=Math.max(.6,v*.005),ans:v.toFixed(2)+" g/mol"}}
 const b=rnd(BQ);return{q:"Balance: "+b[0]+" (enter coefficients separated by commas, e.g. 2,1,2)",ck:x=>x.split(",").map(n=>+n.trim()).join()==b[1].join(),ans:b[1].join(", ")}}
 function play(m){let qs;if(m=="quiz")qs=shuf(Q).slice(0,8);else if(m=="daily"){let s=+new Date().toISOString().slice(0,10).replace(/-/g,"");const r=()=>(s=s*16807%2147483647)/2147483647;qs=[...Q].sort(()=>r()-.5).slice(0,5)}else qs=Array.from({length:8},()=>mk(m));
 G={m,qs:qs.map(q=>Array.isArray(q)?{q:q[0],o:q[1],a:q[2]}:q),i:0,sc:0,st:0,lv:3};nxt()}
 function nxt(){clearInterval(G.tm);if(G.i>=G.qs.length||G.lv<=0)return fin();const q=G.qs[G.i];G.t=15;G.done=0;
-gb.innerHTML=`<div class="hud"><span>${"❤️".repeat(G.lv)}</span><span>⭐ ${G.sc}</span><span>🔥 ${G.st}</span><span id="tm">⏱ 15</span></div><small style="color:var(--mu)">Question ${G.i+1} of ${G.qs.length}</small><h3>${q.q}</h3>`+(q.o?q.o.map((o,i)=>`<button class="opt" onclick="ans(${i})">${o}</button>`).join(""):`<input id="ti" autocomplete="off" onkeydown="if(event.key=='Enter')ans(0)"><button class="go" onclick="ans(0)">Submit</button>`)+`<div id="fb"></div>`;
-G.tm=setInterval(()=>{G.t--;if(G.t>0&&G.t<=5)SFX.tick();document.getElementById("tm").textContent="⏱ "+G.t;if(G.t<=0)ans(-1)},1000)}
+gb.innerHTML=`<div class="hud"><span>${"❤️".repeat(G.lv)}</span><span>⭐ ${G.sc}</span><span>🔥 ${G.st}</span><span id="tm">⏱ 15</span></div><div class="bar"><i id="bi"></i></div><small style="color:var(--mu)">Question ${G.i+1} of ${G.qs.length}</small><h3>${q.q}</h3>`+(q.o?q.o.map((o,i)=>`<button class="opt" onclick="ans(${i})">${o}</button>`).join(""):`<input id="ti" autocomplete="off" onkeydown="if(event.key=='Enter')ans(0)"><button class="go" onclick="ans(0)">Submit</button>`)+`<div id="fb"></div>`;
+G.tm=setInterval(()=>{G.t--;if(G.t>0&&G.t<=5)SFX.tick();{const bi=document.getElementById("bi");bi.style.width=G.t/15*100+"%";bi.classList.toggle("lo",G.t<=5)}document.getElementById("tm").textContent="⏱ "+G.t;if(G.t<=0)ans(-1)},1000)}
 function ans(i){if(G.done)return;G.done=1;clearInterval(G.tm);const q=G.qs[G.i];let ok=false;
 if(q.o){ok=i==q.a;document.querySelectorAll(".opt").forEach((b,j)=>{b.disabled=true;if(j==q.a)b.classList.add("ok");else if(j==i)b.classList.add("no")})}else if(i!=-1)ok=q.ck(document.getElementById("ti").value);
-let m;ok?SFX.ok():SFX.no();if(ok){G.st++;const p=10+G.t+Math.min(G.st-1,5)*2;G.sc+=p;m="✅ Correct! +"+p+" points"}else{G.st=0;G.lv--;m=(i==-1?"⏰ Time’s up. ":"❌ Not quite. ")+(q.ans?"Answer: "+q.ans:"")}
+let m;ok?SFX.ok():SFX.no();navigator.vibrate&&navigator.vibrate(ok?30:[60,40,60]);if(ok){G.st++;const p=10+G.t+Math.min(G.st-1,5)*2;G.sc+=p;pop("+"+p+(G.st>2?" 🔥":""));m="✅ Correct! +"+p+" points"}else{G.st=0;G.lv--;pop("💔");m=(i==-1?"⏰ Time’s up. ":"❌ Not quite. ")+(q.ans?"Answer: "+q.ans:"")}
 document.getElementById("fb").innerHTML="<p>"+m+"</p><button class='go' onclick='G.i++;nxt()'>Next</button>"}
 function save(m,sc){const hs=ls("ce_hs",{}),nb=sc>(hs[m]||0);if(nb){hs[m]=sc;sv("ce_hs",hs)}const x0=ls("ce_xp",0),x=x0+sc;sv("ce_xp",x);const a=LV.filter(l=>x0>=l[0]).length,b=LV.filter(l=>x>=l[0]);return[nb,hs[m],b.length>a?b.pop()[1]:null]}
-function fin(){const[nb,best,up]=save(G.m,G.sc);G.lv<=0?SFX.lose():up?SFX.up():SFX.win();let ex="";if(G.m=="daily"){const d=new Date().toISOString().slice(0,10),y=new Date(Date.now()-864e5).toISOString().slice(0,10),s=ls("ce_ds",{d:"",n:0});if(s.d!=d){s.n=s.d==y?s.n+1:1;s.d=d;sv("ce_ds",s)}ex="<p>🔥 Daily streak: "+s.n+"</p>"}
+function fin(){const[nb,best,up]=save(G.m,G.sc);G.lv<=0?SFX.lose():up?SFX.up():SFX.win();if(G.lv>0)boom(up?90:45);let ex="";if(G.m=="daily"){const d=new Date().toISOString().slice(0,10),y=new Date(Date.now()-864e5).toISOString().slice(0,10),s=ls("ce_ds",{d:"",n:0});if(s.d!=d){s.n=s.d==y?s.n+1:1;s.d=d;sv("ce_ds",s)}ex="<p>🔥 Daily streak: "+s.n+"</p>"}
 gb.innerHTML=`<div class="big">${G.lv<=0?"Game over 💔":"Finished! 🎉"}</div><p>Score: <b>${G.sc}</b> ${nb?"🏆 New high score!":"· Best: "+best}</p>${up?"<p>🎖️ Level up: <b>"+up+"</b></p>":""}${ex}<button class="go" onclick="subm('${G.m}',${G.sc})">🏆 Submit score</button> <button class="go" onclick="play('${G.m}')">Play again</button> <button class="go" onclick="gHome()">Menu</button>`}
 function match(){clearInterval(G.tm);const ps=shuf(D.filter(e=>e.z<37)).slice(0,6),cs=shuf(ps.flatMap(e=>[{k:e.s,t:e.s,c:0},{k:e.s,t:e.n,c:1}]));let sel=null,found=0,mv=0,lock=0;
 gb.innerHTML=`<div class="hud"><span id="mv">Moves: 0</span><button class="go" style="margin:0" onclick="gHome()">Menu</button></div><p>Match each symbol with its element name.</p><div class="mg">${cs.map((c,i)=>`<button class="mc" id="c${i}">?</button>`).join("")}</div><div id="mf"></div>`;
 cs.forEach((c,i)=>{const b=document.getElementById("c"+i);b.onclick=()=>{if(lock||b.disabled||sel===i)return;b.textContent=c.t;b.classList.add("up");SFX.flip();if(sel===null){sel=i;return}mv++;document.getElementById("mv").textContent="Moves: "+mv;const p=cs[sel],pb=document.getElementById("c"+sel);
-if(p.k==c.k&&p.c!=c.c){b.disabled=pb.disabled=true;SFX.ok();b.classList.add("ok");pb.classList.add("ok");sel=null;if(++found==6){const sc=Math.max(10,130-mv*5),[nb,best,up]=save("match",sc);up?SFX.up():SFX.win();document.getElementById("mf").innerHTML="<p>🎉 Done in "+mv+" moves! Score "+sc+(nb?" 🏆 New best!":" · Best: "+best)+(up?"<br>🎖️ Level up: <b>"+up+"</b>":"")+"</p><button class='go' onclick='subm(\"match\","+sc+")'>🏆 Submit score</button> <button class='go' onclick='match()'>Play again</button>"}}
+if(p.k==c.k&&p.c!=c.c){b.disabled=pb.disabled=true;SFX.ok();b.classList.add("ok");pb.classList.add("ok");sel=null;if(++found==6){const sc=Math.max(10,130-mv*5),[nb,best,up]=save("match",sc);up?SFX.up():SFX.win();boom(up?90:45);document.getElementById("mf").innerHTML="<p>🎉 Done in "+mv+" moves! Score "+sc+(nb?" 🏆 New best!":" · Best: "+best)+(up?"<br>🎖️ Level up: <b>"+up+"</b>":"")+"</p><button class='go' onclick='subm(\"match\","+sc+")'>🏆 Submit score</button> <button class='go' onclick='match()'>Play again</button>"}}
 else{SFX.no();lock=1;setTimeout(()=>{b.textContent=pb.textContent="?";b.classList.remove("up");pb.classList.remove("up");sel=null;lock=0},800)}}})}
 function flash(){clearInterval(G.tm);let dk=shuf(D.slice(0,36)),fl=0,know=0;
 const draw=()=>{if(!dk.length){gb.innerHTML=`<p class="big">All done! 🎉</p><p>Cards you knew first try or after review: ${know}</p><button class="go" onclick="flash()">Restart</button> <button class="go" onclick="gHome()">Menu</button>`;return}
@@ -138,7 +183,12 @@ function sbu(){const b=document.getElementById("sb"),mx=document.documentElement
 function sbc(){const b=document.getElementById("sb"),mx=document.documentElement.scrollHeight-innerHeight;scrollTo({top:b.dataset.up=="1"?0:mx,behavior:"smooth"})}
 addEventListener("resize",dev);addEventListener("orientationchange",dev);addEventListener("scroll",sbu,{passive:true});
 try{new ResizeObserver(sbu).observe(document.body)}catch(e){}
-const T=[["pt","Periodic Table"],["mm","Molar Mass"],["bal","Equation Balancer"],["gm","Games"],["nt","Study Notes"]];
+function pop(t){const d=document.createElement("div");d.className="fp";d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),1100)}
+(function(){const w=document.createElement("div");w.id="fx";for(let i=0;i<16;i++){const b=document.createElement("i"),z=14+Math.random()*34;b.textContent=i%4==0?["⚛️","🧪","🔬","💧"][i/4%4|0]:"";b.style.cssText=`left:${Math.random()*100}%;width:${z}px;height:${z}px;font-size:${z*.75}px;animation-duration:${12+Math.random()*16}s;animation-delay:-${Math.random()*20}s`;w.appendChild(b)}document.body.prepend(w)})();
+function boom(n){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;for(let i=0;i<n;i++){const d=document.createElement("i");d.className="cf";d.style.cssText=`left:${Math.random()*100}vw;background:hsl(${Math.random()*360} 90% 60%);--x:${(Math.random()-.5)*220}px;animation-duration:${1.2+Math.random()*1.3}s;animation-delay:${Math.random()*.3}s`;document.body.appendChild(d);setTimeout(()=>d.remove(),3000)}}
+Object.assign(SFX,{ok:()=>{const b=523*Math.pow(1.06,Math.min(G.st||0,8));[1,1.25,1.5].forEach((r,i)=>beep(b*r,.14,"triangle",i*.07,.12))},no:()=>[300,230,160].forEach((f,i)=>beep(f,.22,"sawtooth",i*.12,.07)),win:()=>[523,659,784,1047,1319].forEach((f,i)=>beep(f,.25,"triangle",i*.1,.1))});
+document.addEventListener("click",e=>{if(e.target.closest("nav button"))beep(700,.04,"triangle",0,.05)});
+const T=[["pt","🧪 Table"],["mm","⚖️ Molar Mass"],["bal","🔄 Balancer"],["gm","🎮 Games"],["nt","📝 Notes"]];
 const nav=document.getElementById("nav");
 function show(id){T.forEach(t=>document.getElementById(t[0]).classList.toggle("on",t[0]==id));[...nav.children].forEach((b,i)=>b.classList.toggle("on",T[i][0]==id));if(id=="gm")gHome()}
 T.forEach(t=>{const b=document.createElement("button");b.textContent=t[1];b.onclick=()=>show(t[0]);nav.appendChild(b)});
