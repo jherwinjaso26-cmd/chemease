@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ChemEase</title>
+<style>
+:root{--bg:#f6f8fb;--card:#fff;--tx:#18212f;--mu:#667085;--ac:#0f9d8a;--bd:#dfe5ec;--ok:#15803d;--no:#b42318;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10151c;--card:#1a212b;--tx:#e8edf3;--mu:#98a2b3;--ac:#2dd4bf;--bd:#2c3644;--ok:#4ade80;--no:#f87171}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:16px 16px 4px;max-width:960px;margin:auto;position:relative}h1{margin:0;font-size:26px}h1 span{color:var(--ac)}header p{margin:0;color:var(--mu);font-size:14px}
+nav{display:flex;gap:6px;overflow-x:auto;padding:10px 16px;max-width:960px;margin:auto}
+nav button{flex:none;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:8px 14px;border-radius:20px;font-size:14px;cursor:pointer}
+nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+main{max-width:960px;margin:auto;padding:0 16px 40px}section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:12px}
+input,textarea{width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font:inherit}
+.go{margin-top:10px;background:var(--ac);color:#fff;border:0;padding:10px 18px;border-radius:10px;font:inherit;cursor:pointer}
+.out{margin-top:12px;font-size:15px}.big{font-size:22px;font-weight:700;color:var(--ac)}.err{color:var(--no)}
+.pt{overflow-x:auto;padding-bottom:8px}.grid{display:grid;grid-template-columns:repeat(18,minmax(38px,1fr));gap:3px;min-width:760px}
+.el{aspect-ratio:1;border-radius:6px;font-size:10px;padding:2px 3px;cursor:pointer;color:#10151c;line-height:1.1;border:0;text-align:left}
+.el b{display:block;font-size:14px}.el:hover{outline:2px solid var(--tx)}
+.k0{background:#fca5a5}.k1{background:#fdba74}.k2{background:#fde68a}.k3{background:#bef264}.k4{background:#6ee7b7}.k5{background:#67e8f9}.k6{background:#a5b4fc}.k7{background:#e9a8f5}.k8{background:#cbd5e1}
+#info{min-height:60px}.leg{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--mu);margin-top:8px}.leg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font:inherit;cursor:pointer}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,transparent)}.opt.no{border-color:var(--no);background:color-mix(in srgb,var(--no) 18%,transparent)}
+details{border-bottom:1px solid var(--bd);padding:8px 0}summary{cursor:pointer;font-weight:600}details p{margin:6px 0;color:var(--mu)}
+.hud{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-weight:600;gap:8px}.mg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.mc{aspect-ratio:1;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font:inherit;font-size:13px;cursor:pointer;padding:2px}.mc.up{background:var(--card);border-color:var(--ac)}.mc.ok{border-color:var(--ok)}.fc{width:100%;min-height:150px;border:2px solid var(--ac);border-radius:14px;background:var(--bg);color:var(--tx);font-size:30px;font-weight:700;cursor:pointer;margin-bottom:8px}.fc small{font-size:13px;font-weight:400}
+html{-webkit-text-size-adjust:100%}
+body{overflow-wrap:anywhere;min-height:100dvh}
+input,textarea{font-size:16px}
+.opt,.go,nav button,.mc,.fc{touch-action:manipulation}
+.hud{flex-wrap:wrap}
+header{padding:16px 70px 4px 16px}
+.hint{display:none}
+.grid{min-width:680px}
+footer#dv{max-width:960px;margin:0 auto;padding:0 16px 70px;color:var(--mu);font-size:12px;text-align:center}
+#sb{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));width:46px;height:46px;border-radius:50%;border:0;background:var(--ac);color:#fff;font-size:22px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.3);display:none;z-index:20}
+[data-input=touch] .opt,[data-input=touch] .go{min-height:46px}
+[data-input=touch] .el:hover{outline:0}
+@media(max-width:800px){.hint{display:block;margin:0 0 6px;color:var(--mu);font-size:12px}}
+@media(max-width:600px){body{font-size:15px}h1{font-size:22px}.card{padding:12px}nav{flex-wrap:wrap}nav button{flex:1 1 auto;padding:8px 10px;font-size:13px}.mg{grid-template-columns:repeat(3,1fr);gap:6px}.mc{font-size:clamp(11px,3.4vw,14px)}.fc{font-size:26px;min-height:130px}.big{font-size:19px}}
+@media(min-width:1100px){header,nav,main,footer#dv{max-width:1100px}}
+@media(max-height:500px) and (orientation:landscape){.fc{min-height:90px}.mg{grid-template-columns:repeat(6,1fr)}}
+body{background:radial-gradient(900px 500px at 8% -10%,color-mix(in srgb,var(--ac) 24%,transparent),transparent),radial-gradient(700px 420px at 100% 0,rgba(124,92,255,.2),transparent),var(--bg);background-attachment:fixed}
+h1{font-size:30px;font-weight:800;letter-spacing:-.5px}
+h1 span{background:linear-gradient(90deg,var(--ac),#7c5cff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card{border-radius:18px;box-shadow:0 6px 24px rgba(20,30,60,.08)}
+section.on{animation:pop .35s both}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes pulse{50%{transform:scale(1.04)}}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+nav button{transition:transform .12s,background .12s}nav button:hover{transform:translateY(-2px)}
+nav button.on{background:linear-gradient(90deg,var(--ac),#7c5cff);border-color:transparent;box-shadow:0 4px 14px rgba(124,92,255,.35)}
+.go{background:linear-gradient(90deg,var(--ac),#7c5cff);transition:transform .12s,box-shadow .12s;box-shadow:0 4px 12px rgba(124,92,255,.3)}
+.go:hover{transform:translateY(-2px)}.go:active,.opt:active,.mc:active{transform:scale(.96)}
+.opt{transition:transform .12s,border-color .12s,background .12s}.opt:hover:not(:disabled){transform:translateX(4px);border-color:var(--ac)}
+.opt.ok{animation:pulse .5s}.opt.no{animation:shake .4s}
+.el{animation:pop .45s both;transition:transform .12s}.el:hover{transform:scale(1.25);z-index:2;position:relative;outline:0;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.mc{transition:transform .15s,background .15s}.mc.up{animation:pop .25s both}
+.bar{height:10px;border-radius:9px;background:var(--bd);overflow:hidden;margin:8px 0}
+.bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--ac),#7c5cff);transition:width 1s linear;border-radius:9px}
+.bar i.lo{background:linear-gradient(90deg,#f87171,#fb923c)}
+.cf{position:fixed;top:-14px;width:9px;height:14px;z-index:50;pointer-events:none;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translate(var(--x),105vh) rotate(720deg);opacity:.85}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<header><h1>Chem<span>Ease</span> ⚗️</h1><p>Your pocket chemistry helper</p><button id="mu" onclick="tgl()" aria-label="Toggle sound" style="position:absolute;right:16px;top:16px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer">🔊</button></header>
+<nav id="nav"></nav>
+<main>
+<section id="pt"><div class="card"><p class="hint">Swipe sideways to see the whole table →</p><div class="pt"><div class="grid" id="grid"></div></div><div class="leg" id="leg"></div></div><div class="card" id="info">Tap an element to see its details.</div></section>
+<section id="mm"><div class="card"><label>Chemical formula</label><input id="f" value="Ca(OH)2" autocapitalize="off" spellcheck="false"><button class="go" onclick="molar()">Calculate</button><div class="out" id="mo"></div><p style="color:var(--mu);font-size:13px">Supports parentheses and hydrates, e.g. Al2(SO4)3 or CuSO4·5H2O. Case matters (Co ≠ CO).</p></div></section>
+<section id="bal"><div class="card"><label>Unbalanced equation</label><input id="eq" value="Fe + O2 -> Fe2O3" autocapitalize="off" spellcheck="false"><button class="go" onclick="balance()">Balance</button><div class="out" id="bo"></div><p style="color:var(--mu);font-size:13px">Use -> or = between sides and + between compounds.</p></div></section>
+<section id="gm"><div class="card" id="gbox"></div></section>
+<section id="nt"><div class="card" id="pre"></div><div class="card"><b>My notes</b> <span style="color:var(--mu);font-size:13px">(saved on this device)</span><textarea id="my" rows="7" placeholder="Type your own study notes here…" oninput="saveN()"></textarea></div></section>
+</main><footer id="dv"></footer><button id="sb" aria-label="Scroll" onclick="sbc()">↓</button>
+<script>
+const D="H 1.008 Hydrogen|He 4.0026 Helium|Li 6.94 Lithium|Be 9.0122 Beryllium|B 10.81 Boron|C 12.011 Carbon|N 14.007 Nitrogen|O 15.999 Oxygen|F 18.998 Fluorine|Ne 20.18 Neon|Na 22.99 Sodium|Mg 24.305 Magnesium|Al 26.982 Aluminium|Si 28.085 Silicon|P 30.974 Phosphorus|S 32.06 Sulfur|Cl 35.45 Chlorine|Ar 39.948 Argon|K 39.098 Potassium|Ca 40.078 Calcium|Sc 44.956 Scandium|Ti 47.867 Titanium|V 50.942 Vanadium|Cr 51.996 Chromium|Mn 54.938 Manganese|Fe 55.845 Iron|Co 58.933 Cobalt|Ni 58.693 Nickel|Cu 63.546 Copper|Zn 65.38 Zinc|Ga 69.723 Gallium|Ge 72.63 Germanium|As 74.922 Arsenic|Se 78.971 Selenium|Br 79.904 Bromine|Kr 83.798 Krypton|Rb 85.468 Rubidium|Sr 87.62 Strontium|Y 88.906 Yttrium|Zr 91.224 Zirconium|Nb 92.906 Niobium|Mo 95.95 Molybdenum|Tc 98 Technetium|Ru 101.07 Ruthenium|Rh 102.91 Rhodium|Pd 106.42 Palladium|Ag 107.87 Silver|Cd 112.41 Cadmium|In 114.82 Indium|Sn 118.71 Tin|Sb 121.76 Antimony|Te 127.6 Tellurium|I 126.9 Iodine|Xe 131.29 Xenon|Cs 132.91 Caesium|Ba 137.33 Barium|La 138.91 Lanthanum|Ce 140.12 Cerium|Pr 140.91 Praseodymium|Nd 144.24 Neodymium|Pm 145 Promethium|Sm 150.36 Samarium|Eu 151.96 Europium|Gd 157.25 Gadolinium|Tb 158.93 Terbium|Dy 162.5 Dysprosium|Ho 164.93 Holmium|Er 167.26 Erbium|Tm 168.93 Thulium|Yb 173.05 Ytterbium|Lu 174.97 Lutetium|Hf 178.49 Hafnium|Ta 180.95 Tantalum|W 183.84 Tungsten|Re 186.21 Rhenium|Os 190.23 Osmium|Ir 192.22 Iridium|Pt 195.08 Platinum|Au 196.97 Gold|Hg 200.59 Mercury|Tl 204.38 Thallium|Pb 207.2 Lead|Bi 208.98 Bismuth|Po 209 Polonium|At 210 Astatine|Rn 222 Radon|Fr 223 Francium|Ra 226 Radium|Ac 227 Actinium|Th 232.04 Thorium|Pa 231.04 Protactinium|U 238.03 Uranium|Np 237 Neptunium|Pu 244 Plutonium|Am 243 Americium|Cm 247 Curium|Bk 247 Berkelium|Cf 251 Californium|Es 252 Einsteinium|Fm 257 Fermium|Md 258 Mendelevium|No 259 Nobelium|Lr 266 Lawrencium|Rf 267 Rutherfordium|Db 268 Dubnium|Sg 269 Seaborgium|Bh 270 Bohrium|Hs 277 Hassium|Mt 278 Meitnerium|Ds 281 Darmstadtium|Rg 282 Roentgenium|Cn 285 Copernicium|Nh 286 Nihonium|Fl 289 Flerovium|Mc 290 Moscovium|Lv 293 Livermorium|Ts 294 Tennessine|Og 294 Oganesson".split("|").map((s,i)=>{const p=s.split(" ");return{z:i+1,s:p[0],m:+p[1],n:p[2]}});
+const M={};D.forEach(e=>M[e.s]=e.m);
+const CAT=["Alkali metal","Alkaline earth","Transition metal","Post-transition metal","Metalloid","Nonmetal","Halogen","Noble gas","Lanthanide / Actinide"];
+function cat(z){if([3,11,19,37,55,87].includes(z))return 0;if([4,12,20,38,56,88].includes(z))return 1;if([2,10,18,36,54,86,118].includes(z))return 7;if([9,17,35,53,85,117].includes(z))return 6;if([5,14,32,33,51,52].includes(z))return 4;if([1,6,7,8,15,16,34].includes(z))return 5;if((z>=57&&z<=71)||(z>=89&&z<=103))return 8;if((z>=21&&z<=30)||(z>=39&&z<=48)||(z>=72&&z<=80)||(z>=104&&z<=112))return 2;return 3}
+function pos(z){if(z==1)return[1,1];if(z==2)return[1,18];if(z<=4)return[2,z-2];if(z<=10)return[2,z+8];if(z<=12)return[3,z-10];if(z<=18)return[3,z];if(z<=36)return[4,z-18];if(z<=54)return[5,z-36];if(z<=56)return[6,z-54];if(z<=71)return[8,z-54];if(z<=86)return[6,z-68];if(z<=88)return[7,z-86];if(z<=103)return[9,z-86];return[7,z-100]}
+const g=document.getElementById("grid");
+D.forEach(e=>{const[r,c]=pos(e.z),b=document.createElement("button");b.className="el k"+cat(e.z);b.style.animationDelay=e.z*7+"ms";b.style.gridRow=r>7?r+1:r;b.style.gridColumn=c;b.innerHTML="<span>"+e.z+"</span><b>"+e.s+"</b>";b.onclick=()=>{document.getElementById("info").innerHTML="<span class='big'>"+e.s+"</span> — <b>"+e.n+"</b><br>Atomic number: "+e.z+" · Atomic mass: "+e.m+" g/mol<br>Group: "+CAT[cat(e.z)];beep(260+e.z*5,.15,"sine",0,.1);document.getElementById("info").scrollIntoView({behavior:"smooth",block:"nearest"})};g.appendChild(b)});
+document.getElementById("leg").innerHTML=CAT.map((c,i)=>"<span><i class='k"+i+"'></i>"+c+"</span>").join("");
+function parse(f){let i=0;const num=()=>{let s="";while(i<f.length&&/\d/.test(f[i]))s+=f[i++];return s?+s:1};
+function grp(){const c={};const add=(g,n)=>{for(const k in g)c[k]=(c[k]||0)+g[k]*n};
+while(i<f.length){const ch=f[i];if(ch=="("||ch=="["){i++;const g=grp();if(f[i]!=")"&&f[i]!="]")throw Error("Missing closing bracket");i++;add(g,num())}
+else if(ch==")"||ch=="]")return c;
+else if(/[A-Z]/.test(ch)){let s=ch;i++;while(i<f.length&&/[a-z]/.test(f[i]))s+=f[i++];if(!M[s])throw Error("Unknown element: "+s);add({[s]:1},num())}
+else if(ch=="·"||ch=="*"||ch=="."){i++;const n=num();add(grp(),n);return c}
+else throw Error("Unexpected character: "+ch)}return c}
+const r=grp();if(i<f.length)throw Error("Unbalanced brackets");return r}
+function mass(c){return Object.keys(c).reduce((a,k)=>a+M[k]*c[k],0)}
+function molar(){const o=document.getElementById("mo");try{const f=document.getElementById("f").value.replace(/\s/g,"");if(!f)throw Error("Enter a formula");const c=parse(f),t=mass(c);
+o.innerHTML="<span class='big'>"+t.toFixed(3)+" g/mol</span><br>"+Object.keys(c).map(k=>k+" × "+c[k]+" = "+(M[k]*c[k]).toFixed(3)+" ("+(M[k]*c[k]/t*100).toFixed(1)+"%)").join("<br>")}catch(e){o.innerHTML="<span class='err'>"+e.message+"</span>"}}
+function balance(){const o=document.getElementById("bo");try{const s=document.getElementById("eq").value.replace(/\s/g,"").replace(/→|=>|==|=/g,"->").split("->");if(s.length!=2)throw Error("Use -> between reactants and products");
+const L=s[0].split("+").filter(Boolean),R=s[1].split("+").filter(Boolean),all=[...L,...R],cs=all.map(parse),els=[...new Set(cs.flatMap(c=>Object.keys(c)))];
+const A=els.map(e=>cs.map((c,j)=>(c[e]||0)*(j<L.length?1:-1))),n=all.length;let r=0;const piv=[];
+for(let c=0;c<n&&r<A.length;c++){let p=r;for(let k=r;k<A.length;k++)if(Math.abs(A[k][c])>Math.abs(A[p][c]))p=k;if(Math.abs(A[p][c])<1e-9)continue;[A[r],A[p]]=[A[p],A[r]];const d=A[r][c];A[r]=A[r].map(v=>v/d);for(let k=0;k<A.length;k++)if(k!=r){const f=A[k][c];A[k]=A[k].map((v,j)=>v-f*A[r][j])}piv.push(c);r++}
+const free=[...Array(n).keys()].filter(c=>!piv.includes(c));if(free.length!=1)throw Error(free.length?"This equation has multiple possible balances or is invalid":"Can't be balanced — check the formulas");
+const v=Array(n).fill(0);v[free[0]]=1;piv.forEach((c,i)=>v[c]=-A[i][free[0]]);
+let m=1;for(;m<=1000;m++)if(v.every(x=>Math.abs(x*m-Math.round(x*m))<1e-6))break;const w=v.map(x=>Math.round(x*m));if(w.some(x=>x<=0))throw Error("Can't be balanced — check the formulas");
+const f=(a,off)=>a.map((x,j)=>(w[j+off]>1?w[j+off]:"")+x).join(" + ");
+o.innerHTML="<span class='big'>"+f(L,0)+" → "+f(R,L.length)+"</span>"}catch(e){o.innerHTML="<span class='err'>"+e.message+"</span>"}}
+const Q=[["What is the atomic number of Carbon?",["4","6","8","12"],1],["Which element has the symbol Na?",["Nitrogen","Neon","Sodium","Nickel"],2],["What is the molar mass of H₂O (approx.)?",["16 g/mol","18 g/mol","20 g/mol","34 g/mol"],1],["Which group contains the noble gases?",["Group 1","Group 17","Group 18","Group 2"],2],["pH below 7 means the solution is…",["Basic","Neutral","Acidic","Saturated"],2],["How many moles are in 36 g of water?",["1 mol","2 mol","3 mol","4 mol"],1],["Avogadro’s number is approximately…",["6.02 × 10²³","6.02 × 10²⁰","3.00 × 10⁸","9.81"],0],["Which type of bond shares electrons?",["Ionic","Covalent","Hydrogen","Metallic"],1],["Which element is a halogen?",["Argon","Sodium","Chlorine","Calcium"],2],["In the reaction 2H₂ + O₂ → 2H₂O, what is the coefficient of H₂O?",["1","2","3","4"],1],["What is the charge of a proton?",["Negative","Neutral","Positive","Variable"],2],["Which element has the symbol Fe?",["Fluorine","Iron","Francium","Fermium"],1]];
+let qi=0,sc=0,qs=[];
+function qstart(){qs=[...Q].sort(()=>Math.random()-.5).slice(0,6);qi=0;sc=0;qshow()}
+function qshow(){const b=document.getElementById("qbox");if(qi>=qs.length){b.innerHTML="<div class='big'>Score: "+sc+" / "+qs.length+"</div><p>"+(sc>=5?"Great job! 🎉":"Keep studying — you’ve got this!")+"</p><button class='go' onclick='qstart()'>Try again</button>";return}
+const q=qs[qi];b.innerHTML="<small style='color:var(--mu)'>Question "+(qi+1)+" of "+qs.length+"</small><h3>"+q[0]+"</h3>"+q[1].map((o,i)=>"<button class='opt' onclick='ans("+i+")'>"+o+"</button>").join("")+"<div id='fb'></div>"}
+function ans(i){const q=qs[qi],bs=document.querySelectorAll(".opt");if(bs[0].disabled)return;bs.forEach((b,j)=>{b.disabled=true;if(j==q[2])b.classList.add("ok");else if(j==i)b.classList.add("no")});if(i==q[2])sc++;document.getElementById("fb").innerHTML="<button class='go' onclick='qi++;qshow()'>"+(qi+1<qs.length?"Next":"See score")+"</button>"}
+const N=[["Mole concept","One mole = 6.022 × 10²³ particles. Moles = mass (g) ÷ molar mass (g/mol)."],["Balancing equations","Atoms of each element must be equal on both sides. Adjust coefficients only, never subscripts."],["Types of reactions","Synthesis (A + B → AB), decomposition (AB → A + B), single replacement, double replacement, combustion."],["Chemical bonds","Ionic: electrons transferred (metal + nonmetal). Covalent: electrons shared (nonmetal + nonmetal). Metallic: sea of electrons."],["Acids & bases","pH < 7 acidic, 7 neutral, > 7 basic. pH = −log[H⁺]."],["Periodic trends","Atomic radius increases down a group and decreases across a period. Electronegativity does the opposite."],["Gas laws","Boyle: P₁V₁ = P₂V₂. Charles: V₁/T₁ = V₂/T₂. Ideal gas: PV = nRT (T in kelvin)."]];
+document.getElementById("pre").innerHTML="<b>Quick review</b>"+N.map(n=>"<details><summary>"+n[0]+"</summary><p>"+n[1]+"</p></details>").join("");
+try{document.getElementById("my").value=localStorage.getItem("ce_notes")||""}catch(e){}
+function saveN(){try{localStorage.setItem("ce_notes",document.getElementById("my").value)}catch(e){}}
+const ls=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const LV=[[0,"Lab Rookie"],[60,"Beaker Boss"],[200,"Mole Master"],[450,"Noble Gas Nerd"],[900,"Chem Legend"]];
+const gb=document.getElementById("gbox"),rnd=a=>a[Math.floor(Math.random()*a.length)],shuf=a=>[...a].sort(()=>Math.random()-.5);
+const GM=[["🧠","Quiz","play('quiz')","quiz"],["⚛️","Guess the Element","play('el')","el"],["⚖️","Molar Mass Challenge","play('mm')","mm"],["🔢","Balance It!","play('bal')","bal"],["🃏","Element Match","match()","match"],["📇","Flashcards","flash()",""],["📅","Daily Challenge","play('daily')","daily"],["🏆","Leaderboard","board()",""]];
+const FP=["NaCl","H2O","CO2","CaCO3","H2SO4","NH3","C6H12O6","Mg(OH)2","Al2(SO4)3","KMnO4","HCl","NaOH","CH4","Fe2O3","CuSO4·5H2O"];
+const BQ=[["H2 + O2 -> H2O",[2,1,2]],["Fe + O2 -> Fe2O3",[4,3,2]],["CH4 + O2 -> CO2 + H2O",[1,2,1,2]],["Na + Cl2 -> NaCl",[2,1,2]],["N2 + H2 -> NH3",[1,3,2]],["C3H8 + O2 -> CO2 + H2O",[1,5,3,4]],["Al + HCl -> AlCl3 + H2",[2,6,2,3]],["KClO3 -> KCl + O2",[2,2,3]]];
+let snd=ls("ce_snd",1),AC;
+function beep(f,d,t,s,v){if(!snd)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state=="suspended")AC.resume();const o=AC.createOscillator(),g=AC.createGain(),t0=AC.currentTime+(s||0);o.type=t||"sine";o.frequency.value=f;g.gain.setValueAtTime(v||.15,t0);g.gain.exponentialRampToValueAtTime(.001,t0+d);o.connect(g);g.connect(AC.destination);o.start(t0);o.stop(t0+d)}catch(e){}}
+const SFX={ok:()=>{beep(660,.12);beep(880,.18,"sine",.1)},no:()=>{beep(220,.2,"sawtooth",0,.08);beep(150,.3,"sawtooth",.15,.08)},tick:()=>beep(1000,.05,"square",0,.04),flip:()=>beep(500,.06,"triangle"),win:()=>[523,659,784,1047].forEach((f,i)=>beep(f,.2,"sine",i*.12)),lose:()=>[400,330,260,200].forEach((f,i)=>beep(f,.25,"triangle",i*.15)),up:()=>[523,659,784,1047,1319].forEach((f,i)=>beep(f,.15,"square",i*.08,.06))};
+function tgl(){snd=snd?0:1;sv("ce_snd",snd);document.getElementById("mu").textContent=snd?"🔊":"🔇";SFX.flip()}
+document.getElementById("mu").textContent=snd?"🔊":"🔇";
+let G={};
+function gHome(){clearInterval(G.tm);const xp=ls("ce_xp",0),hs=ls("ce_hs",{});const L=LV.filter(l=>xp>=l[0]),nx=LV[L.length];
+gb.innerHTML=`<div class="big">🏅 ${L.pop()[1]}</div><div class="bar"><i style="width:${nx?Math.min(100,(xp-LV[L.length][0])/(nx[0]-LV[L.length][0])*100):100}%"></i></div><small style="color:var(--mu)">${xp} XP${nx?" · "+(nx[0]-xp)+" to "+nx[1]:" · max level!"} · Daily streak: ${ls("ce_ds",{n:0}).n} 🔥</small><h3>Choose a game</h3>`+GM.map(m=>`<button class="opt" onclick="${m[2]}">${m[0]} <b>${m[1]}</b>${hs[m[3]]!=null?`<small style="color:var(--mu)"> · Best: ${hs[m[3]]}</small>`:""}</button>`).join("")+`<p style="color:var(--mu);font-size:13px">Quiz, element, molar mass and balance games: 8 questions, 3 lives, 15 seconds each. Faster answers and streaks earn bonus points.</p>`}
+function mk(m){if(m=="el"){const e=rnd(D),o=shuf([e,...shuf(D.filter(x=>x!==e)).slice(0,3)]),t=Math.floor(Math.random()*3),a=o.indexOf(e);return t==0?{q:"Which element has the symbol "+e.s+"?",o:o.map(x=>x.n),a}:t==1?{q:"What is the symbol for "+e.n+"?",o:o.map(x=>x.s),a}:{q:"Which element has atomic number "+e.z+"?",o:o.map(x=>x.n),a}}
+if(m=="mm"){const f=rnd(FP),v=mass(parse(f));return{q:"What is the molar mass of "+f+"? (g/mol, nearest whole number is fine)",ck:x=>Math.abs(parseFloat(x)-v)<=Math.max(.6,v*.005),ans:v.toFixed(2)+" g/mol"}}
+const b=rnd(BQ);return{q:"Balance: "+b[0]+" (enter coefficients separated by commas, e.g. 2,1,2)",ck:x=>x.split(",").map(n=>+n.trim()).join()==b[1].join(),ans:b[1].join(", ")}}
+function play(m){let qs;if(m=="quiz")qs=shuf(Q).slice(0,8);else if(m=="daily"){let s=+new Date().toISOString().slice(0,10).replace(/-/g,"");const r=()=>(s=s*16807%2147483647)/2147483647;qs=[...Q].sort(()=>r()-.5).slice(0,5)}else qs=Array.from({length:8},()=>mk(m));
+G={m,qs:qs.map(q=>Array.isArray(q)?{q:q[0],o:q[1],a:q[2]}:q),i:0,sc:0,st:0,lv:3};nxt()}
+function nxt(){clearInterval(G.tm);if(G.i>=G.qs.length||G.lv<=0)return fin();const q=G.qs[G.i];G.t=15;G.done=0;
+gb.innerHTML=`<div class="hud"><span>${"❤️".repeat(G.lv)}</span><span>⭐ ${G.sc}</span><span>🔥 ${G.st}</span><span id="tm">⏱ 15</span></div><div class="bar"><i id="bi"></i></div><small style="color:var(--mu)">Question ${G.i+1} of ${G.qs.length}</small><h3>${q.q}</h3>`+(q.o?q.o.map((o,i)=>`<button class="opt" onclick="ans(${i})">${o}</button>`).join(""):`<input id="ti" autocomplete="off" onkeydown="if(event.key=='Enter')ans(0)"><button class="go" onclick="ans(0)">Submit</button>`)+`<div id="fb"></div>`;
+G.tm=setInterval(()=>{G.t--;if(G.t>0&&G.t<=5)SFX.tick();{const bi=document.getElementById("bi");bi.style.width=G.t/15*100+"%";bi.classList.toggle("lo",G.t<=5)}document.getElementById("tm").textContent="⏱ "+G.t;if(G.t<=0)ans(-1)},1000)}
+function ans(i){if(G.done)return;G.done=1;clearInterval(G.tm);const q=G.qs[G.i];let ok=false;
+if(q.o){ok=i==q.a;document.querySelectorAll(".opt").forEach((b,j)=>{b.disabled=true;if(j==q.a)b.classList.add("ok");else if(j==i)b.classList.add("no")})}else if(i!=-1)ok=q.ck(document.getElementById("ti").value);
+let m;ok?SFX.ok():SFX.no();navigator.vibrate&&navigator.vibrate(ok?30:[60,40,60]);if(ok){G.st++;const p=10+G.t+Math.min(G.st-1,5)*2;G.sc+=p;m="✅ Correct! +"+p+" points"}else{G.st=0;G.lv--;m=(i==-1?"⏰ Time’s up. ":"❌ Not quite. ")+(q.ans?"Answer: "+q.ans:"")}
+document.getElementById("fb").innerHTML="<p>"+m+"</p><button class='go' onclick='G.i++;nxt()'>Next</button>"}
+function save(m,sc){const hs=ls("ce_hs",{}),nb=sc>(hs[m]||0);if(nb){hs[m]=sc;sv("ce_hs",hs)}const x0=ls("ce_xp",0),x=x0+sc;sv("ce_xp",x);const a=LV.filter(l=>x0>=l[0]).length,b=LV.filter(l=>x>=l[0]);return[nb,hs[m],b.length>a?b.pop()[1]:null]}
+function fin(){const[nb,best,up]=save(G.m,G.sc);G.lv<=0?SFX.lose():up?SFX.up():SFX.win();if(G.lv>0)boom(up?90:45);let ex="";if(G.m=="daily"){const d=new Date().toISOString().slice(0,10),y=new Date(Date.now()-864e5).toISOString().slice(0,10),s=ls("ce_ds",{d:"",n:0});if(s.d!=d){s.n=s.d==y?s.n+1:1;s.d=d;sv("ce_ds",s)}ex="<p>🔥 Daily streak: "+s.n+"</p>"}
+gb.innerHTML=`<div class="big">${G.lv<=0?"Game over 💔":"Finished! 🎉"}</div><p>Score: <b>${G.sc}</b> ${nb?"🏆 New high score!":"· Best: "+best}</p>${up?"<p>🎖️ Level up: <b>"+up+"</b></p>":""}${ex}<button class="go" onclick="subm('${G.m}',${G.sc})">🏆 Submit score</button> <button class="go" onclick="play('${G.m}')">Play again</button> <button class="go" onclick="gHome()">Menu</button>`}
+function match(){clearInterval(G.tm);const ps=shuf(D.filter(e=>e.z<37)).slice(0,6),cs=shuf(ps.flatMap(e=>[{k:e.s,t:e.s,c:0},{k:e.s,t:e.n,c:1}]));let sel=null,found=0,mv=0,lock=0;
+gb.innerHTML=`<div class="hud"><span id="mv">Moves: 0</span><button class="go" style="margin:0" onclick="gHome()">Menu</button></div><p>Match each symbol with its element name.</p><div class="mg">${cs.map((c,i)=>`<button class="mc" id="c${i}">?</button>`).join("")}</div><div id="mf"></div>`;
+cs.forEach((c,i)=>{const b=document.getElementById("c"+i);b.onclick=()=>{if(lock||b.disabled||sel===i)return;b.textContent=c.t;b.classList.add("up");SFX.flip();if(sel===null){sel=i;return}mv++;document.getElementById("mv").textContent="Moves: "+mv;const p=cs[sel],pb=document.getElementById("c"+sel);
+if(p.k==c.k&&p.c!=c.c){b.disabled=pb.disabled=true;SFX.ok();b.classList.add("ok");pb.classList.add("ok");sel=null;if(++found==6){const sc=Math.max(10,130-mv*5),[nb,best,up]=save("match",sc);up?SFX.up():SFX.win();boom(up?90:45);document.getElementById("mf").innerHTML="<p>🎉 Done in "+mv+" moves! Score "+sc+(nb?" 🏆 New best!":" · Best: "+best)+(up?"<br>🎖️ Level up: <b>"+up+"</b>":"")+"</p><button class='go' onclick='subm(\"match\","+sc+")'>🏆 Submit score</button> <button class='go' onclick='match()'>Play again</button>"}}
+else{SFX.no();lock=1;setTimeout(()=>{b.textContent=pb.textContent="?";b.classList.remove("up");pb.classList.remove("up");sel=null;lock=0},800)}}})}
+function flash(){clearInterval(G.tm);let dk=shuf(D.slice(0,36)),fl=0,know=0;
+const draw=()=>{if(!dk.length){gb.innerHTML=`<p class="big">All done! 🎉</p><p>Cards you knew first try or after review: ${know}</p><button class="go" onclick="flash()">Restart</button> <button class="go" onclick="gHome()">Menu</button>`;return}
+const e=dk[0];gb.innerHTML=`<div class="hud"><span>${dk.length} left</span><button class="go" style="margin:0" onclick="gHome()">Menu</button></div><button class="fc" id="fc">${fl?e.n+"<br><small>Atomic no. "+e.z+" · "+e.m+" g/mol · "+CAT[cat(e.z)]+"</small>":e.s}</button><p style="color:var(--mu)">Tap the card to flip</p>`+(fl?`<button class="go" onclick="fk(1)">✅ Got it</button> <button class="go" style="background:var(--no)" onclick="fk(0)">🔁 Review again</button>`:"");
+document.getElementById("fc").onclick=()=>{SFX.flip();fl=fl?0:1;draw()}};
+window.fk=k=>{k?SFX.ok():SFX.flip();const e=dk.shift();if(k)know++;else dk.push(e);fl=0;draw()};draw()}
+async function subm(m,sc){let n=ls("ce_name","");n=(prompt("Your name for the leaderboard (max 16 characters):",n)||"").trim();if(!n)return;sv("ce_name",n);
+try{const r=await fetch("/api/score",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:n,mode:m,score:sc})}),j=await r.json();if(!r.ok)throw Error(j.error||"Failed");board(m)}catch(e){alert("Couldn’t submit: "+e.message)}}
+async function board(m){m=m||"quiz";const nm={quiz:"Quiz",el:"Guess the Element",mm:"Molar Mass",bal:"Balance It!",match:"Element Match",daily:"Daily"};
+gb.innerHTML=`<div class="hud"><b>🏆 Leaderboard</b><button class="go" style="margin:0" onclick="gHome()">Menu</button></div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">${Object.keys(nm).map(k=>`<button class="opt" style="width:auto;margin:0;${k==m?"border-color:var(--ac)":""}" onclick="board('${k}')">${nm[k]}</button>`).join("")}</div><div id="bd">Loading…</div>`;
+try{const r=await fetch("/api/leaderboard?mode="+m);if(!r.ok)throw 0;const l=await r.json();document.getElementById("bd").innerHTML=l.length?l.map((x,i)=>`<div class="hud"><span>${["🥇","🥈","🥉"][i]||(i+1)+"."} ${x.name}</span><span>${x.score}</span></div>`).join(""):"No scores yet. Be the first!"}catch(e){document.getElementById("bd").textContent="The leaderboard needs the server running (it won’t work from a plain file)."}}
+function dev(){const w=innerWidth,t=matchMedia("(pointer:coarse)").matches,d=w<600?"phone":w<1024?"tablet":"desktop",h=document.documentElement;h.dataset.device=d;h.dataset.input=t?"touch":"mouse";document.getElementById("dv").textContent="Layout adjusted for your "+d+" ("+(t?"touch":"mouse")+" · "+w+"×"+innerHeight+")";sbu()}
+function sbu(){const b=document.getElementById("sb"),mx=document.documentElement.scrollHeight-innerHeight;if(mx<80){b.style.display="none";return}b.style.display="block";const up=scrollY>mx/2;b.textContent=up?"↑":"↓";b.setAttribute("aria-label",up?"Scroll to top":"Scroll to bottom");b.dataset.up=up?1:0}
+function sbc(){const b=document.getElementById("sb"),mx=document.documentElement.scrollHeight-innerHeight;scrollTo({top:b.dataset.up=="1"?0:mx,behavior:"smooth"})}
+addEventListener("resize",dev);addEventListener("orientationchange",dev);addEventListener("scroll",sbu,{passive:true});
+try{new ResizeObserver(sbu).observe(document.body)}catch(e){}
+function boom(n){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;for(let i=0;i<n;i++){const d=document.createElement("i");d.className="cf";d.style.cssText=`left:${Math.random()*100}vw;background:hsl(${Math.random()*360} 90% 60%);--x:${(Math.random()-.5)*220}px;animation-duration:${1.2+Math.random()*1.3}s;animation-delay:${Math.random()*.3}s`;document.body.appendChild(d);setTimeout(()=>d.remove(),3000)}}
+Object.assign(SFX,{ok:()=>{const b=523*Math.pow(1.06,Math.min(G.st||0,8));[1,1.25,1.5].forEach((r,i)=>beep(b*r,.14,"triangle",i*.07,.12))},no:()=>[300,230,160].forEach((f,i)=>beep(f,.22,"sawtooth",i*.12,.07)),win:()=>[523,659,784,1047,1319].forEach((f,i)=>beep(f,.25,"triangle",i*.1,.1))});
+document.addEventListener("click",e=>{if(e.target.closest("nav button"))beep(700,.04,"triangle",0,.05)});
+const T=[["pt","🧪 Table"],["mm","⚖️ Molar Mass"],["bal","🔄 Balancer"],["gm","🎮 Games"],["nt","📝 Notes"]];
+const nav=document.getElementById("nav");
+function show(id){T.forEach(t=>document.getElementById(t[0]).classList.toggle("on",t[0]==id));[...nav.children].forEach((b,i)=>b.classList.toggle("on",T[i][0]==id));if(id=="gm")gHome()}
+T.forEach(t=>{const b=document.createElement("button");b.textContent=t[1];b.onclick=()=>show(t[0]);nav.appendChild(b)});
+show("pt");dev();
+</script></body></html>
